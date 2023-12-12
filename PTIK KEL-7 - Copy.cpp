@@ -48,6 +48,34 @@ void item::get_item(void){
 void item::put_item(void){
     cout<<setw(6)<<code<<setw(15)<<name<<setw(6)<<qty<<endl; //setup dengan lebar field membutuhkan library iomanip
 }
+
+void deleteNamaBarang(void){
+    int no;
+    cout<<"Masukkan kode barang untuk dihapus: "  ;
+    cin>>no;
+    ofstream file2;  //stream object
+    //open new.dat file for write operation
+    file2.open("new.dat",ios::binary);
+    file.open("stock.dat", ios::in|ios::binary);
+    if(!file)    //if open file fails
+    {
+        cout<<"file not found";
+        exit(0);
+    }else{
+        //read record form stock.dat file into object
+        file.read((char*)&it, sizeof(it));
+        while(!file.eof()){
+            if(no != it.get_code()){
+                file2.write((char*)&it, sizeof(it));
+            }
+            file.read((char*)&it, sizeof(it));
+        }
+    }
+    file2.close();
+    file.close();
+    remove("stock.dat");
+    rename("new.dat","stock.dat");
+}
  
 //Fuction Prototype
 void addBarang(void);
