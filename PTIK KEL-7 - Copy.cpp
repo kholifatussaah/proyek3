@@ -34,6 +34,35 @@ public:
 }
  
 };
+
+void showBarang(void){
+    int no, flag = 0;
+    file.open("stock.dat", ios::in|ios::binary);
+    if (!file){ //Jika file tidak bisa dibuka
+        cout<<"file tidak ditemukan";
+        exit(0);
+    }else{
+        cout<<"Masukkan code yang dicari: ";
+        cin>>no;
+        //Baca record dari file dan dimasukkan ke object
+        while(!file.eof()){ //ketika akhir dari file
+            if(no==it.get_code()){
+                flag=1;
+                cout<<"-----------------------------------------\n";
+                cout<<setw(6)<<"Kode"<<setw(15)<<"Nama"<<setw(6)<<"Qty"<<endl;
+                cout<<"-----------------------------------------\n";
+                it.put_item();
+                cout<<"-----------------------------------------\n";
+                break;
+            }
+            file.read((char*)&it, sizeof(it));
+        }
+        if (flag==0){
+            cout<<"Item tidak ditemukan ....\n";
+        }
+    }
+    file.close();
+}
  
 //Member fungtion class item di luar class
  
